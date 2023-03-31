@@ -9,4 +9,3 @@ def to_kv(k: str, v: Union[int, float]) -> Tuple[str, float]:
     the square of its value.
     '''
     return (k, float(v**2))
-
