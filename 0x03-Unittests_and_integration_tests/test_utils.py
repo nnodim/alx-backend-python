@@ -3,19 +3,15 @@
 A unittest module
 """
 import unittest
-from typing import Dict, Tuple, Union
-from unittest.mock import patch, Mock
 from parameterized import parameterized
-
-from utils import (
-    access_nested_map,
-    get_json,
-    memoize,
-)
+from utils import access_nested_map, get_json, memoize
+from unittest.mock import patch, Mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
-    """0. Parameterize a unit test"""
+    """
+    A TestAccessNestedMap class that inherits from unittest.TestCase.
+    """
 
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
@@ -38,6 +34,24 @@ class TestAccessNestedMap(unittest.TestCase):
         """
         with self.assertRaises(expection):
             access_nested_map(nested_map, path)
+
+
+class TestGetJson(unittest.TestCase):
+    """A class to test the get_json function."""
+
+    @parameterized.expand(
+        [
+            ('http://example.com', {'payload': True}),
+            ('http://holberton.io', {'payload': False})
+        ]
+    )
+    def test_get_json(self, url, expected_result):
+        """A method to test that get_json returns the expected result."""
+        mock_get = Mock()
+        mock_get.json.return_value = expected_result
+        with patch('requests.get', return_value=mock_get):
+            response = get_json(url)
+            self.assertEqual(response, expected_result)
 
 
 if __name__ == "__main__":
